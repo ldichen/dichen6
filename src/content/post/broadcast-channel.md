@@ -3,6 +3,7 @@ layout: ../../layouts/post.astro
 title: BroadcastChannel - Turn your Telegram Channel into a MicroBlog
 description: Turn your Telegram Channel into a MicroBlog
 dateFormatted: Aug 11, 2024
+tags: ["Telegram", "CSS", "Zero JS", "Open Source"]
 ---
 
 I have been sharing some interesting tools on [X](https://x.com/0xKaibi) and also synchronizing them to my Telegram Channel. I saw that [Austin mentioned he is preparing to create a website](https://x.com/austinit/status/1817832660758081651) to compile all the shared content. This reminded me of a template I recently came across called [Sepia](https://github.com/Planetable/SiteTemplateSepia), and I thought about converting the Telegram Channel into a microblog.

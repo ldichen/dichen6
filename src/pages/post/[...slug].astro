@@ -1,5 +1,6 @@
 ---
 import { getCollection } from "astro:content";
+import { getCategoryFromSlug } from "../../utils/category.js";
 
 export async function getStaticPaths() {
 	const postEntries = await getCollection("post");
@@ -11,6 +12,10 @@ export async function getStaticPaths() {
 
 const { entry } = Astro.props;
 const { Content } = await entry.render();
+
+// 为布局添加分类和标签信息
+const category = getCategoryFromSlug(entry.slug);
+const tags = entry.data.tags || [];
 ---
 
-<Content />
+<Content category={category} tags={tags} slug={entry.slug} />

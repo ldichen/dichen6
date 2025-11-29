@@ -3,6 +3,7 @@ layout: ../../layouts/post.astro
 title: Solving the issue of Cloudflare Web Analytics being blocked by AdBlock
 description: Solving the issue of Cloudflare Web Analytics being blocked by AdBlock
 dateFormatted: Jan 8th, 2024
+tags: ["Cloudflare", "Analytics", "AdBlock", "Tutorial"]
 ---
 
 Earlier, we solved the issues of [Vercel Analytics](https://dev.to/ccbikai/jie-jue-vercel-analytics-bei-adblock-ping-bi-wen-ti-1o21-temp-slug-5601874) and [Umami](https://dev.to/ccbikai/jie-jue-umami-bei-adblock-ping-bi-wen-ti-3kc2-temp-slug-2355567) being blocked by AdBlock, and now we are also going to solve the problem for [Email.ML](https://email.ml/) which uses [Cloudflare Web Analytics](https://www.cloudflare.com/zh-cn/web-analytics/).

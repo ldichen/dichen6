@@ -1,6 +1,31 @@
 ---
-import menus from "../collections/menu.json";
+import { getCollection } from "astro:content";
 import Logo from "../components/logo.astro";
+import { getAllCategories, formatCategoryName } from "../utils/category.js";
+
+// 获取所有分类
+const allPosts = await getCollection("post");
+const categories = getAllCategories(allPosts);
+
+// 过滤掉 uncategorized，并按字母顺序排序
+const displayCategories = categories
+  .filter((cat) => cat.slug !== "uncategorized")
+  .sort((a, b) => a.slug.localeCompare(b.slug));
+
+const menus = [
+  // { key: "nav.home", url: "/", defaultText: "Home" },
+    { key: "nav.posts", url: "/blogs", defaultText: "Blogs" },
+  // 动态添加分类菜单
+  ...displayCategories.map((cat) => ({
+    key: `nav.category.${cat.slug}`,
+    url: `/category/${cat.slug}`,
+    defaultText: formatCategoryName(cat.slug),
+  })),
+
+  { key: "nav.projects", url: "/projects", defaultText: "Projects" },
+  {key: "nav.category", url: "/category", defaultText: "category" },
+  { key: "nav.about", url: "/about", defaultText: "About" },
+];
 ---
 
 <!-- This is an invisible div with relative position so that it takes up the height of the menu (because menu is absolute/fixed) -->
@@ -60,16 +85,15 @@ import Logo from "../components/logo.astro";
           </div>
         </div>
         {
-          menus.map((menu) => {
-            return (
-              <a
-                href={menu.url}
-                class="relative flex items-center justify-center w-full px-3 py-2 font-medium tracking-wide text-center duration-200 ease-out sm:py-0 sm:mb-0 md:w-auto hover:text-neutral-900 dark:hover:text-white"
-              >
-                {menu.name}
-              </a>
-            )
-          })
+          menus.map((menu) => (
+            <a
+              href={menu.url}
+              data-i18n={menu.key}
+              class="relative flex items-center justify-center w-full px-3 py-2 font-medium tracking-wide text-center duration-200 ease-out sm:py-0 sm:mb-0 md:w-auto hover:text-neutral-900 dark:hover:text-white"
+            >
+              {menu.defaultText}
+            </a>
+          ))
         }
       </div>
       <div
@@ -106,10 +130,14 @@ import Logo from "../components/logo.astro";
             ></path></svg
           >
         </div>
-        <span class="hidden sm:inline-block">
-          <span id="dayText" class="ml-2">Day mode</span>
-          <span id="nightText" class="hidden ml-2">Night mode</span>
-        </span>
+      </div>
+
+      <!-- Language Switcher -->
+      <div
+        id="langToggle"
+        class="relative flex items-center pl-4 ml-4 font-medium tracking-wide cursor-pointer text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white"
+      >
+        <span id="langText" class="text-sm">EN</span>
       </div>
     </nav>
   </div>

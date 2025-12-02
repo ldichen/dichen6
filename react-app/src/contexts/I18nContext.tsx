@@ -21,11 +21,10 @@ const translations = {
     "nav.about": "About",
     "nav.dayMode": "Day mode",
     "nav.nightMode": "Night mode",
-    "home.greeting": "I'm Dichen6.",
+    "home.greeting": "I'm Dichen 6",
     "home.title": "Researcher & Developer",
     "home.affiliation": "Nanjing, China",
-    "home.intro":
-      "Exploring the frontiers of AI with a focus on geospatial intelligence, environmental science, and large language models.",
+    "home.focus": "Questioning the world, and myself",
     "home.quote": '"The science of today is the technology of tomorrow."',
     "home.researchTitle": "Research Interests",
     "home.research1": "Artificial Intelligence",
@@ -45,6 +44,11 @@ const translations = {
     "home.location": "Nanjing, China",
     "home.followButton": "Follow me on 𝕏",
     "home.writingsSeparator": "Some of my writing",
+    "home.whatIDo": "What I Do",
+    "home.keywords": "Build · Explore · Observe · Understand",
+    "pagination.previous": "Previous",
+    "pagination.next": "Next",
+    "pagination.pageInfo": "Page {current} of {total}",
     "writings.title": "My Writings",
     "writings.description":
       "Along with coding I also like to write about life and technology. Here are some of my recent posts.",
@@ -97,6 +101,12 @@ AI 的到来也是如此——
 **“微光影响微光”**，是我开这个专栏的全部理由。
 我希望把我从他那里得到的那一点点光，继续传递给更多人。
 如果有人因这些内容受益一二，那是我能想到的最好的回馈。`,
+    "category.idle-thoughts.name": "Idle Thoughts",
+    "category.idle-thoughts.desc": `这里不是答案的仓库，而是**问题的温室**。
+
+那些在路上被忽略的念头、深夜里突然跳出来的疑问、看似无用却让人停下脚步的片段，都放在这里。
+      
+不是为了说服谁，只是为了让自己看得更清楚。`,
     "category.shoulders-of-giants.name": "Shoulders of Giants",
     "category.shoulders-of-giants.desc": `我们总以为自己在"原创"，其实更多时候是在与前人的回声对话。
 
@@ -113,10 +123,9 @@ AI 的到来也是如此——
     "nav.about": "关于",
     "nav.dayMode": "日间模式",
     "nav.nightMode": "夜间模式",
-    "home.greeting": "我是 Dichen6",
+    "home.greeting": "我是 Dichen 6",
     "home.intro": "我是一名生活在南京的前端程序员。",
-    "home.focus":
-      "喜欢探索人工智能的前沿，重点关注地理空间智能/地理学/环境科学/LLM。",
+    "home.focus": "追问世界，追问自己",
     "home.helpTitle": "我可以帮助你：",
     "home.skill1": "Vue.js 开发",
     "home.skill2": "React.js 开发",
@@ -125,6 +134,11 @@ AI 的到来也是如此——
     "home.skill5": "以及更多...",
     "home.followButton": "在 𝕏 上关注我",
     "home.writingsSeparator": "我的一些文章",
+    "home.whatIDo": "我在做什么",
+    "home.keywords": "构建系统 · 探索智能 · 观察地球 · 理解世界",
+    "pagination.previous": "上一页",
+    "pagination.next": "下一页",
+    "pagination.pageInfo": "第 {current} 页，共 {total} 页",
     "writings.title": "我的文章",
     "writings.description":
       "除了编程，我也喜欢写一些关于生活和技术的文章。这是我最近的一些文章。",

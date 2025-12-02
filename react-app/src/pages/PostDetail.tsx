@@ -17,7 +17,7 @@ interface PostContent {
 }
 
 // Load all MDX modules eagerly
-const postModules = import.meta.glob("../content/posts/**/*.mdx", {
+const postModules = import.meta.glob("../content/posts/**/*.{md,mdx}", {
   eager: true,
 }) as Record<string, PostContent>;
 
@@ -58,7 +58,10 @@ export const PostDetail: React.FC = () => {
           // Check if this path matches our category and slug
           if (
             path.includes(`/${category}/`) &&
-            (path.endsWith(`/${slug}.mdx`) || path.includes(`-${slug}.mdx`))
+            (path.endsWith(`/${slug}.mdx`) ||
+              path.includes(`-${slug}.mdx`) ||
+              path.endsWith(`/${slug}.md`) ||
+              path.includes(`-${slug}.md`))
           ) {
             foundModule = module;
             console.log("Found matching module:", path);

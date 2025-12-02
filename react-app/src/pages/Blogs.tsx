@@ -1,12 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useI18n } from "../contexts/I18nContext";
 import { usePosts } from "../hooks/usePosts";
 import { formatDate } from "../utils/posts";
+import { Pagination } from "../components/ui/Pagination";
+
+const POSTS_PER_PAGE = 5;
 
 export const Blogs: React.FC = () => {
   const { t, lang } = useI18n();
   const { posts, loading } = usePosts();
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const totalPages = Math.ceil(posts.length / POSTS_PER_PAGE);
+  const startIndex = (currentPage - 1) * POSTS_PER_PAGE;
+  const paginatedPosts = posts.slice(startIndex, startIndex + POSTS_PER_PAGE);
 
   if (loading) {
     return (
@@ -37,7 +45,7 @@ export const Blogs: React.FC = () => {
         {/* Posts Grid */}
         {posts.length > 0 ? (
           <div className="grid grid-cols-1 gap-6">
-            {posts.map((post, index) => (
+            {paginatedPosts.map((post, index) => (
               <article
                 key={post.slug}
                 className="group animate-fade-in"
@@ -125,10 +133,16 @@ export const Blogs: React.FC = () => {
         ) : (
           <div className="text-center py-12">
             <span className="icon-[tabler--mood-empty] w-16 h-16 text-gray-400 dark:text-gray-600 mx-auto mb-4"></span>
-            <p className="text-gray-600 dark:text-gray-400">
-              No posts found in this category.
-            </p>
+            <p className="text-gray-600 dark:text-gray-400">No posts found.</p>
           </div>
+        )}
+
+        {posts.length > 0 && (
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={setCurrentPage}
+          />
         )}
       </div>
     </div>

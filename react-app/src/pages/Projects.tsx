@@ -1,5 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import { useI18n } from "../contexts/I18nContext";
+import { Pagination } from "../components/ui/Pagination";
+
+const PROJECTS_PER_PAGE = 6;
 
 const sampleProjects = [
   {
@@ -31,6 +34,14 @@ const sampleProjects = [
 
 export const Projects: React.FC = () => {
   const { t } = useI18n();
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const totalPages = Math.ceil(sampleProjects.length / PROJECTS_PER_PAGE);
+  const startIndex = (currentPage - 1) * PROJECTS_PER_PAGE;
+  const paginatedProjects = sampleProjects.slice(
+    startIndex,
+    startIndex + PROJECTS_PER_PAGE,
+  );
 
   return (
     <div className="relative py-12 md:py-12">
@@ -53,7 +64,7 @@ export const Projects: React.FC = () => {
 
         {/* Projects Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {sampleProjects.map((project, index) => (
+          {paginatedProjects.map((project, index) => (
             <div
               key={project.id}
               className="group animate-fade-in"
@@ -135,6 +146,14 @@ export const Projects: React.FC = () => {
             </div>
           ))}
         </div>
+
+        {sampleProjects.length > 0 && (
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={setCurrentPage}
+          />
+        )}
 
         {/* CTA Section */}
         <div className="mt-20 animate-fade-in">

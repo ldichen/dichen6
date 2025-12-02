@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -8,11 +8,15 @@ import { useI18n } from "../contexts/I18nContext";
 import { usePosts } from "../hooks/usePosts";
 import { formatDate } from "../utils/posts";
 import { categoryMap, categorySlugMap } from "../config/categories";
+import { Pagination } from "../components/ui/Pagination";
+
+const POSTS_PER_PAGE = 5;
 
 export const CategoryDetail: React.FC = () => {
   const { categoryId } = useParams<{ categoryId: string }>();
   const { t, lang } = useI18n();
   const { posts, loading } = usePosts();
+  const [currentPage, setCurrentPage] = useState(1);
 
   if (!categoryId || !categoryMap[categoryId]) {
     return (
@@ -35,6 +39,13 @@ export const CategoryDetail: React.FC = () => {
   const categoryDirName = categorySlugMap[categoryId];
   const categoryPosts = posts.filter(
     (post) => post.category === categoryDirName,
+  );
+
+  const totalPages = Math.ceil(categoryPosts.length / POSTS_PER_PAGE);
+  const startIndex = (currentPage - 1) * POSTS_PER_PAGE;
+  const paginatedPosts = categoryPosts.slice(
+    startIndex,
+    startIndex + POSTS_PER_PAGE,
   );
 
   if (loading) {
@@ -104,7 +115,7 @@ export const CategoryDetail: React.FC = () => {
         {/* Posts Grid */}
         {categoryPosts.length > 0 ? (
           <div className="grid grid-cols-1 gap-6">
-            {categoryPosts.map((post, index) => (
+            {paginatedPosts.map((post, index) => (
               <article
                 key={post.slug}
                 className="group animate-fade-in"
@@ -196,6 +207,14 @@ export const CategoryDetail: React.FC = () => {
               No posts in this category yet.
             </p>
           </div>
+        )}
+
+        {categoryPosts.length > 0 && (
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={setCurrentPage}
+          />
         )}
       </div>
     </div>

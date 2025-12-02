@@ -2,9 +2,9 @@
  * @Author: DiChen
  * @Date: 2025-12-02 10:42:26
  * @LastEditors: DiChen
- * @LastEditTime: 2025-12-02 16:00:30
+ * @LastEditTime: 2025-12-03 05:05:09
  */
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useTheme } from "../../contexts/ThemeContext";
 import { useI18n } from "../../contexts/I18nContext";
@@ -15,6 +15,12 @@ export const Header: React.FC = () => {
   const location = useLocation();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isScrollingDown, setIsScrollingDown] = useState(false);
+  const [postTitle, setPostTitle] = useState<string | null>(null);
+  const lastScrollY = useRef(0);
+
+  // Check if we're on a post detail page
+  const isPostPage = location.pathname.startsWith("/post/");
 
   const navigation = [
     { name: t("nav.posts"), path: "/blogs" },
@@ -29,13 +35,54 @@ export const Header: React.FC = () => {
     { name: t("nav.about"), path: "/about" },
   ];
 
+  // Handle scroll detection for post title display
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
+      const currentScrollY = window.scrollY;
+      setIsScrolled(currentScrollY > 20);
+
+      // Only detect scroll direction on post pages
+      if (isPostPage) {
+        const scrollDelta = currentScrollY - lastScrollY.current;
+
+        // Show title when scrolling down past threshold
+        if (currentScrollY > 100) {
+          // Scrolling down - show post title
+          if (scrollDelta > 5) {
+            setIsScrollingDown(true);
+          }
+          // Scrolling up more than 50px - hide post title and show navigation
+          else if (scrollDelta < -5) {
+            setIsScrollingDown(false);
+          }
+        } else {
+          // Near top of page - always show navigation
+          setIsScrollingDown(false);
+        }
+      }
+
+      lastScrollY.current = currentScrollY;
     };
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [isPostPage]);
+
+  // Get post title from the page when on a post page
+  useEffect(() => {
+    if (isPostPage) {
+      // Wait a bit for the post to render, then get the title
+      const timer = setTimeout(() => {
+        const titleElement = document.querySelector("article h1");
+        if (titleElement) {
+          setPostTitle(titleElement.textContent);
+        }
+      }, 100);
+      return () => clearTimeout(timer);
+    } else {
+      setPostTitle(null);
+      setIsScrollingDown(false);
+    }
+  }, [isPostPage, location.pathname]);
 
   const isActivePath = (path: string) => {
     if (path === "/") return location.pathname === "/";
@@ -55,7 +102,10 @@ export const Header: React.FC = () => {
       <nav className="max-w-7xl mx-auto px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 md:h-20">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-2 group">
+          <Link
+            to="/"
+            className="flex items-center space-x-2 group flex-shrink-0"
+          >
             <div className="flex justify-center items-center h-10 transition-all group-hover:scale-105">
               {theme === "dark" ? (
                 <img src="/dark2.svg" alt="Logo" className="h-5 w-auto" />
@@ -63,18 +113,45 @@ export const Header: React.FC = () => {
                 <img src="/light2.svg" alt="Logo" className="h-5 w-auto" />
               )}
             </div>
-            <p className="text-accent-primary mt-4 text-lg sm:ml-4 sm:mt-0 sm:border-l-2 sm:border-neutral-300 sm:pl-2 dark:text-neutral-100 dark:sm:border-neutral-700">
-              Dichen6
-            </p>
           </Link>
 
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-1 ml-auto">
+          {/* Site name or Post title */}
+          <div className="relative h-6 flex items-center overflow-hidden flex-1 min-w-0">
+            {/* Dichen6 - default state */}
+            <p
+              className={`text-accent-primary text-lg ml-4 border-l-2 border-neutral-300 pl-2 dark:text-neutral-100 dark:border-neutral-700 transition-all duration-300 ease-out whitespace-nowrap ${
+                isPostPage && isScrollingDown && postTitle
+                  ? "opacity-0 -translate-y-6 absolute"
+                  : "opacity-100 translate-y-0"
+              }`}
+            >
+              Dichen6
+            </p>
+            {/* Post title - shown when scrolling on post page */}
+            <p
+              className={`text-gray-900 dark:text-white text-m font-medium ml-4 border-l-2 border-neutral-300 pl-2 dark:border-neutral-700 transition-all duration-300 ease-out truncate ${
+                isPostPage && isScrollingDown && postTitle
+                  ? "opacity-100 translate-y-0"
+                  : "opacity-0 translate-y-6 absolute"
+              }`}
+            >
+              {postTitle}
+            </p>
+          </div>
+
+          {/* Desktop Navigation - Hidden when showing post title */}
+          <div
+            className={`hidden md:flex items-center space-x-1 flex-shrink-0 transition-all duration-300 ease-out ${
+              isPostPage && isScrollingDown && postTitle
+                ? "opacity-0 pointer-events-none max-w-0 overflow-hidden"
+                : "opacity-100 max-w-none"
+            }`}
+          >
             {navigation.map((item) => (
               <Link
                 key={item.path}
                 to={item.path}
-                className={`px-4 py-2 text-sm font-medium transition-colors duration-200 ${
+                className={`px-4 py-2 text-sm font-medium transition-colors duration-200 whitespace-nowrap ${
                   isActivePath(item.path)
                     ? "text-accent-primary"
                     : "text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white"

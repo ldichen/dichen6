@@ -1,0 +1,29 @@
+# Binaries
+comment-service
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Database
+comments.db
+*.db
+*.db-shm
+*.db-wal
+
+# Test binary
+*.test
+
+# Output
+*.out
+
+# Go workspace file
+go.work
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~

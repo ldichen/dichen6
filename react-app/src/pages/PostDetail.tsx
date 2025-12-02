@@ -3,6 +3,7 @@ import { useParams, Link } from "react-router-dom";
 import { useI18n } from "../contexts/I18nContext";
 import { formatDate } from "../utils/posts";
 import { TableOfContents } from "../components/TableOfContents";
+import { Comments } from "../components/Comments";
 
 interface PostContent {
   default: React.ComponentType;
@@ -249,6 +250,9 @@ export const PostDetail: React.FC = () => {
                 <span>Back to all posts</span>
               </Link>
             </div>
+
+            {/* Comments Section */}
+            {postPath && <Comments postSlug={postPath} />}
           </article>
 
           {/* ToC sidebar */}

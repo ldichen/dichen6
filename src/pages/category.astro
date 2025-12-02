@@ -9,7 +9,7 @@ const categories = getAllCategories(allPosts);
 ---
 
 <Layout title="Categories">
-  <section class="relative z-20 max-w-2xl mx-auto my-12 px-7 lg:px-0">
+  <section class="relative z-2 max-w-5xl mx-auto my-12 px-7 lg:px-0">
     <PageHeading
       title="Category"
       description="Browse posts by category"
@@ -30,7 +30,7 @@ const categories = getAllCategories(allPosts);
               <h2 data-i18n={`nav.category.${category.slug}`} class="text-xl font-bold text-neutral-900 dark:text-neutral-100 mb-2">
                 {category.displayName}
               </h2>
-              <p data-i18n={`nav.category.${category.slug}.desc`} class="text-sm text-neutral-600 dark:text-neutral-400 mb-2">
+              <p data-i18n={`nav.category.${category.slug}.desc`} class="text-sm text-neutral-600 dark:text-neutral-400 mb-2 line-clamp-2">
                 {category.displayName}
               </p>
               <p class="text-xs text-neutral-500 dark:text-neutral-500">

@@ -1,3 +1,12 @@
+// 引入 marked 库
+import { marked } from "marked";
+
+// 配置 marked
+marked.setOptions({
+  breaks: true, // 支持换行
+  gfm: true, // 启用 GitHub Flavored Markdown
+});
+
 // 国际化翻译数据
 const ui = {
   en: {
@@ -101,7 +110,40 @@ const ui = {
 
     ///////////////////////满座衣冠似雪///////////////////////////
     "nav.category.snow-like": "满座衣冠似雪",
-    "nav.category.snow-like.desc": "这里是满座衣冠似雪",
+    "nav.category.snow-like.desc": `从初一开始接触辩论，最先接触的就是**黄执中**。
+他的辩论，我看了一遍又一遍；不过瘾，就下载到手机里继续看；他的微博，我刷到不能再刷；连“少爷”那些略带尺度、略显淘气的配图，都成了少年时期独特的记忆。
+他的博客我反复看，不够就下载保存，不够就打印出来一页页翻。
+后来他的博客没了。幸运的是，我手上还有一份完整备份（也感谢网上愿意保存、愿意传承的人）。<br>
+上大学后，我一腔热血加入辩论社——
+我狠狠地打辩论，近乎疯狂，妄图成为像他那样的人。
+但天资平平，没能打出什么名堂；
+我不聪明，但我固执。
+四年打辩论，没进校队，却从没离开过赛场。
+这种纯爱好、零收益、零回报、纯粹投入的事，至今再没第二件。<br>
+辩论教会我的，也远不止“怎么赢一场比赛”。
+更重要的，是——**怎么认识你自己，怎么认识这个世界🌍；<br>
+直到现在，我依然时不时会让左右脑打上一架，
+依然对辩论这种“小众的游戏”抱有温热的关注。<br>
+如今开始写博客，我很清楚：
+黄执中对我思考方式的塑造，是根系一样的深、空气一样的常态。<br>
+**“微光影响微光”**，是我开这个专栏的全部理由。
+我希望把我从他那里得到的那一点点光，继续传递给更多人。
+如果有人因这些内容受益一二，那是我能想到的最好的回馈。`,
+
+    ////////////////////////AI4Everything///////////////////////////
+    "nav.category.ai4everything": "AI4Everything",
+    "nav.category.ai4everything.desc":
+      "探索 **人工智能** 的无限可能，关注 `AI` 在各个领域的应用",
+
+    /////////////////////////Idle Thoughts///////////////////////////
+    "nav.category.idle-thoughts": "杂念",
+    "nav.category.idle-thoughts.desc":
+      "这里不是答案的仓库，而是**问题的温室**。那些在路上被忽略的念头、深夜里突然跳出来的疑问、看似无用却让人停下脚步的片段，都放在这里。不是为了说服谁，只是为了让自己看得更清楚。",
+
+    /////////////////////////Shoulders of Giants///////////////////////////
+    "nav.category.shoulders-of-giants": "巨人的肩膀",
+    "nav.category.shoulders-of-giants.desc":
+      '我们总以为自己在"原创"，其实更多时候是在与前人的回声对话。这里收集那些比我**更早、更深、更远**的声音——不是为了致敬，而是为了提醒自己：*视野的边界，往往不是天生的，而是被启发扩出去的。*',
   },
 };
 
@@ -129,6 +171,23 @@ function t(key) {
   return ui[lang]?.[key] || ui[defaultLang][key] || key;
 }
 
+// 检查文本是否包含 Markdown 标记
+function hasMarkdown(text) {
+  return (
+    text.includes("**") || // 粗体
+    text.includes("*") || // 斜体
+    text.includes("[") || // 链接
+    text.includes("`") || // 代码
+    text.includes("#") || // 标题
+    text.includes("\n") // 换行
+  );
+}
+
+// 渲染 Markdown
+function renderMarkdown(text) {
+  return marked.parse(text);
+}
+
 // 更新页面上所有带 data-i18n 属性的元素
 function updatePageLanguage(lang) {
   document.documentElement.lang = lang;
@@ -137,7 +196,14 @@ function updatePageLanguage(lang) {
   document.querySelectorAll("[data-i18n]").forEach((el) => {
     const key = el.getAttribute("data-i18n");
     if (key && ui[lang]?.[key]) {
-      el.textContent = ui[lang][key];
+      const text = ui[lang][key];
+
+      // 检查是否包含 Markdown 标记
+      if (hasMarkdown(text)) {
+        el.innerHTML = renderMarkdown(text);
+      } else {
+        el.textContent = text;
+      }
     }
   });
 

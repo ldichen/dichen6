@@ -2,7 +2,7 @@
  * @Author: DiChen
  * @Date: 2025-12-03 11:30:00
  * @LastEditors: DiChen
- * @LastEditTime: 2025-12-03 15:25:34
+ * @LastEditTime: 2025-12-03 17:07:18
  */
 import React, { useState, useEffect, useRef } from "react";
 import { useI18n } from "../contexts/I18nContext";
@@ -71,7 +71,9 @@ export const Comments: React.FC<CommentsProps> = ({ postSlug }) => {
     } catch (err) {
       console.error("Error loading comments:", err);
       setError(
-        lang === "zh" ? "加载评论失败，请稍后重试" : "Failed to load comments"
+        lang === "zh"
+          ? "这家伙服务器崩了都不知道，快去提醒他维护！"
+          : "This guy's server crashed and didn't even know it, go remind him to maintain it!"
       );
     } finally {
       setLoading(false);

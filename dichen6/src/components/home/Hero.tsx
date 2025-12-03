@@ -36,7 +36,7 @@ export const Hero: React.FC = () => {
           isDeleting = false;
         }
       },
-      isDeleting ? 50 : 100,
+      isDeleting ? 50 : 100
     ); // Faster deletion
 
     return () => clearInterval(timer);
@@ -207,7 +207,7 @@ export const Hero: React.FC = () => {
                 <span className="icon-[tabler--arrow-right] w-4 h-4 shrink-0 relative z-10 group-hover:translate-x-1 transition-transform"></span>
               </a>
               <a
-                href="https://www.researchgate.net"
+                href="https://www.researchgate.net/profile/Dichen-Liu-2"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="group inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-white dark:bg-gray-900 text-gray-900 dark:text-white font-semibold border-2 border-gray-200 dark:border-gray-800 hover:border-accent-primary dark:hover:border-accent-primary shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105"

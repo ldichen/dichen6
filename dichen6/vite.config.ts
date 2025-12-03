@@ -2,7 +2,7 @@
  * @Author: DiChen
  * @Date: 2025-12-02 03:34:25
  * @LastEditors: DiChen
- * @LastEditTime: 2025-12-03 16:09:40
+ * @LastEditTime: 2025-12-03 16:39:22
  */
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";

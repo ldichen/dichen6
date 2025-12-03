@@ -13,7 +13,7 @@ import remarkMdxFrontmatter from "remark-mdx-frontmatter";
 import path from "path";
 
 // https://vitejs.dev/config/
-export default defineConfig({
+export default defineConfig(({ command }) => ({
   plugins: [
     {
       enforce: "pre",
@@ -23,10 +23,11 @@ export default defineConfig({
     },
     react(),
   ],
-  base: "/dichen6/",
+  // 开发环境用 /，生产环境用 /dichen6/
+  base: command === "serve" ? "/" : "/dichen6/",
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
     },
   },
-});
+}));

@@ -13,7 +13,7 @@ import remarkMdxFrontmatter from "remark-mdx-frontmatter";
 import path from "path";
 
 // https://vitejs.dev/config/
-export default defineConfig(({ command }) => ({
+export default defineConfig({
   plugins: [
     {
       enforce: "pre",
@@ -23,11 +23,11 @@ export default defineConfig(({ command }) => ({
     },
     react(),
   ],
-  // 开发环境用 /，生产环境用 /dichen6/
-  base: command === "serve" ? "/" : "/dichen6/",
+  // 使用自定义域名 dichen.cc，所有环境都用 /
+  base: "/",
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
     },
   },
-}));
+});

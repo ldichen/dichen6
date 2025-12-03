@@ -253,6 +253,7 @@ func getComments(c *fiber.Ctx) error {
 
 	// Map to store all comments by ID
 	commentsMap := make(map[int]*Comment)
+	var allComments []*Comment
 	var topLevelComments []*Comment
 
 	for rows.Next() {
@@ -279,10 +280,11 @@ func getComments(c *fiber.Ctx) error {
 
 		comment.Replies = []*Comment{}
 		commentsMap[comment.ID] = &comment
+		allComments = append(allComments, &comment)
 	}
 
-	// Build hierarchical structure
-	for _, comment := range commentsMap {
+	// Build hierarchical structure - use allComments to preserve order
+	for _, comment := range allComments {
 		if comment.ParentID == nil {
 			// Top-level comment
 			topLevelComments = append(topLevelComments, comment)

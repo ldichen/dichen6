@@ -48,6 +48,9 @@ const translations = {
     "home.keywords": "Build · Explore · Observe · Understand",
     "pagination.previous": "Previous",
     "pagination.next": "Next",
+    "post.backToBlogs": "Back to all posts",
+    "post.previousPost": "Previous",
+    "post.nextPost": "Next",
     "pagination.pageInfo": "Page {current} of {total}",
     "writings.title": "My Writings",
     "writings.description":
@@ -139,6 +142,9 @@ AI 的到来也是如此——
     "pagination.previous": "上一页",
     "pagination.next": "下一页",
     "pagination.pageInfo": "第 {current} 页，共 {total} 页",
+    "post.backToBlogs": "返回所有文章",
+    "post.previousPost": "上一篇",
+    "post.nextPost": "下一篇",
     "writings.title": "我的文章",
     "writings.description":
       "除了编程，我也喜欢写一些关于生活和技术的文章。这是我最近的一些文章。",

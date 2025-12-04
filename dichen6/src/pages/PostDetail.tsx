@@ -4,6 +4,7 @@ import { useI18n } from "../contexts/I18nContext";
 import { formatDate } from "../utils/posts";
 import { TableOfContents } from "../components/TableOfContents";
 import { Comments } from "../components/Comments";
+import { usePosts } from "../hooks/usePosts";
 
 interface PostContent {
   default: React.ComponentType;
@@ -24,7 +25,8 @@ const postModules = import.meta.glob("../content/posts/**/*.{md,mdx}", {
 
 export const PostDetail: React.FC = () => {
   const { "*": postPath } = useParams<{ "*": string }>();
-  const { lang } = useI18n();
+  const { t, lang } = useI18n();
+  const { posts } = usePosts();
   const [postContent, setPostContent] = useState<PostContent | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -73,7 +75,7 @@ export const PostDetail: React.FC = () => {
         if (!foundModule) {
           console.error(
             "Post not found. Available modules:",
-            Object.keys(postModules),
+            Object.keys(postModules)
           );
           throw new Error("Post not found");
         }
@@ -135,6 +137,12 @@ export const PostDetail: React.FC = () => {
   const { frontmatter } = postContent;
   const PostComponent = postContent.default;
 
+  // Find current post index and get prev/next posts
+  const currentPostIndex = posts.findIndex((post) => post.slug === postPath);
+  const prevPost = currentPostIndex > 0 ? posts[currentPostIndex - 1] : null;
+  const nextPost =
+    currentPostIndex < posts.length - 1 ? posts[currentPostIndex + 1] : null;
+
   return (
     <div className="relative py-16 md:py-24">
       {/* Outer container: centered and includes Post + ToC */}
@@ -160,10 +168,10 @@ export const PostDetail: React.FC = () => {
                   </li>
                   <li>
                     <Link
-                      to={`/category`}
+                      to={`/category/${frontmatter.category.toLowerCase()}`}
                       className="text-gray-600 dark:text-gray-400 hover:text-accent-primary transition-colors"
                     >
-                      {frontmatter.category}
+                      {t(`category.${frontmatter.category.toLowerCase()}.name`)}
                     </Link>
                   </li>
                   <li className="flex items-center">
@@ -241,14 +249,63 @@ export const PostDetail: React.FC = () => {
                 </div>
               )}
 
-              {/* Back to Blog Link */}
+              {/* Previous/Next Post Navigation */}
               <div className="mt-8 pt-8 border-t border-gray-200 dark:border-gray-800 animate-fade-in">
+                <div className="flex justify-between items-center gap-4">
+                  {/* Previous Post */}
+                  {prevPost ? (
+                    <Link
+                      to={`/post/${prevPost.slug}`}
+                      className="flex-1 group"
+                    >
+                      <div className="flex items-start space-x-3 p-4 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-accent-primary dark:hover:border-accent-primary transition-colors">
+                        <span className="icon-[tabler--arrow-left] w-5 h-5 text-gray-400 dark:text-gray-500 group-hover:text-accent-primary transition-colors flex-shrink-0 mt-0.5"></span>
+                        <div className="flex-1 min-w-0">
+                          <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">
+                            {t("post.previousPost")}
+                          </div>
+                          <div className="text-sm font-medium text-gray-900 dark:text-white group-hover:text-accent-primary transition-colors truncate">
+                            {prevPost.title}
+                          </div>
+                        </div>
+                      </div>
+                    </Link>
+                  ) : (
+                    <div className="flex-1"></div>
+                  )}
+
+                  {/* Next Post */}
+                  {nextPost ? (
+                    <Link
+                      to={`/post/${nextPost.slug}`}
+                      className="flex-1 group"
+                    >
+                      <div className="flex items-start space-x-3 p-4 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-accent-primary dark:hover:border-accent-primary transition-colors">
+                        <div className="flex-1 min-w-0 text-right">
+                          <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">
+                            {t("post.nextPost")}
+                          </div>
+                          <div className="text-sm font-medium text-gray-900 dark:text-white group-hover:text-accent-primary transition-colors truncate">
+                            {nextPost.title}
+                          </div>
+                        </div>
+                        <span className="icon-[tabler--arrow-right] w-5 h-5 text-gray-400 dark:text-gray-500 group-hover:text-accent-primary transition-colors flex-shrink-0 mt-0.5"></span>
+                      </div>
+                    </Link>
+                  ) : (
+                    <div className="flex-1"></div>
+                  )}
+                </div>
+              </div>
+
+              {/* Back to Blog Link */}
+              <div className="mt-6 animate-fade-in">
                 <Link
                   to="/blogs"
                   className="inline-flex items-center space-x-2 text-gray-700 dark:text-gray-300 hover:text-accent-primary font-medium transition-colors"
                 >
                   <span className="icon-[tabler--arrow-left] w-5 h-5"></span>
-                  <span>Back to all posts</span>
+                  <span>{t("post.backToBlogs")}</span>
                 </Link>
               </div>
             </article>
